@@ -1,16 +1,10 @@
-import ky from "ky";
-import { env } from "@/env";
+// lib/api.ts
+import ky from 'ky'
 
-export const apiForm = ky.create({
-  prefixUrl: env.NEXT_PUBLIC_API_BASE_URL,
-  credentials: "include",
-  retry: 0,
-  timeout: 30000,
-  hooks: {
-    beforeRequest: [
-      (request): void => {
-        request.headers.set("Accept", "application/json");
-      },
-    ],
+export const api = ky.create({
+  prefixUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
   },
-});
+  credentials: 'include', // para cookies HttpOnly
+})

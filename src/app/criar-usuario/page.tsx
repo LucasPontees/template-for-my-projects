@@ -1,28 +1,30 @@
 "use client"
 
 import { useState, useRef } from "react";
-import { apiForm } from "@/http/api";
+import { api } from "@/http/api";
 import { z } from "zod";
 
 const userSchema = z.object({
-  name: z.string().min(2, "Nome obrigatório"),
-  email: z.string().email("Email inválido"),
+  name: z.string().min(3, "Nome obrigatório"),
+  surname: z.string().min(3, "Sobrenome obrigatório"),
+  login: z.string().min(3, "Login obrigatório"),
   password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
-  avatarUrl: z.any().optional(),
 });
 
 export default function CriarUsuarioPage() {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [surname, setSurname] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState<File | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const formRef = useRef<HTMLFormElement>(null);
+  const [mensagem, setMensagem] = useState("");
+
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrors({});
-    const result = userSchema.safeParse({ name, email, password, avatarUrl });
+    const result = userSchema.safeParse({ name, surname, password, login });
     if (!result.success) {
       const fieldErrors: { [key: string]: string } = {};
       result.error.errors.forEach((err) => {
@@ -31,21 +33,21 @@ export default function CriarUsuarioPage() {
       setErrors(fieldErrors);
       return;
     }
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("password", password);
-    if (avatarUrl) formData.append("avatarUrl", avatarUrl);
+
     try {
-      await apiForm.post("users", { body: formData });
-      alert("Usuário criado com sucesso!");
+      await api.post("auth/register", {
+        json: { name, surname, login, password },
+      });
+      setMensagem("Usuário criado com sucesso!");
       setName("");
-      setEmail("");
+      setSurname("");
+      setLogin("");
       setPassword("");
-      setAvatarUrl(null);
-      formRef.current?.reset();
+      setTimeout(() => setMensagem(""), 3000);
     } catch (error) {
-      alert("Erro ao criar usuário.");
+      setMensagem("Falha na criação do usuário!");
+      setTimeout(() => setMensagem(""), 3000);
+
     }
   }
 
@@ -65,17 +67,29 @@ export default function CriarUsuarioPage() {
           {errors.name && <div>{errors.name}</div>}
         </div>
         <div>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="surname">Surname:</label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+            type="text"
+            id="surname"
+            name="surname"
+            value={surname}
+            onChange={e => setSurname(e.target.value)}
             className="border border-border rounded-md p-2"
 
           />
-          {errors.email && <div>{errors.email}</div>}
+          {errors.surname && <div>{errors.surname}</div>}
+        </div>
+        <div>
+          <label htmlFor="login">login:</label>
+          <input
+            type="text"
+            id="login"
+            name="login"
+            value={login}
+            onChange={e => setLogin(e.target.value)}
+            className="border border-border rounded-md p-2"
+          />
+          {errors.login && <div>{errors.login}</div>}
         </div>
         <div>
           <label htmlFor="password">Senha:</label>
@@ -90,16 +104,13 @@ export default function CriarUsuarioPage() {
           {errors.password && <div>{errors.password}</div>}
         </div>
         <div>
-          <label htmlFor="avatarUrl">Avatar:</label>
-          <input
-            type="file"
-            id="avatarUrl"
-            name="avatarUrl"
-            accept="image/*"
-            onChange={e => setAvatarUrl(e.target.files ? e.target.files[0] : null)}
-          />
-          {errors.avatarUrl && <div>{errors.avatarUrl}</div>}
+          {mensagem && (
+            <div className="mt-2 text-center text-sm text-red-600">
+              {mensagem}
+            </div>
+          )}
         </div>
+
         <button type="submit" className="bg-primary text-text px-4 py-2 rounded-md cursor-pointer">Criar</button>
       </form>
     </div>
