@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { api } from "@/http/api";
 import { z } from "zod";
+import { Button } from "@/components/ui/button";
 
 const userSchema = z.object({
   name: z.string().min(3, "Nome obrigatório"),
@@ -52,67 +53,83 @@ export default function CriarUsuarioPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="name">Nome:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            className="border border-border rounded-md p-2"
-          />
-          {errors.name && <div>{errors.name}</div>}
-        </div>
-        <div>
-          <label htmlFor="surname">Surname:</label>
-          <input
-            type="text"
-            id="surname"
-            name="surname"
-            value={surname}
-            onChange={e => setSurname(e.target.value)}
-            className="border border-border rounded-md p-2"
+    <div className="min-h-screen bg-background text-text flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-background rounded-2xl shadow-ld p-8 border border-border">
+        <h1 className="text-2xl text-text text-center mb-6">Criar conta no Cash Alto</h1>
+        <form ref={formRef} onSubmit={handleSubmit} className="block mb-1 text-sm">
+          <div>
+            <label htmlFor="name">Nome</label>
+            <input
+              type="text"
+              id="name"
+              placeholder="Nome"
+              name="name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-background border border-border text-text placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+            {errors.name && <div>{errors.name}</div>}
+          </div>
+          <div>
+            <label htmlFor="surname" className="block mb-1 text-sm">Sobrenome</label>
+            <input
+              type="text"
+              id="surname"
+              placeholder="Sobrenome"
+              name="surname"
+              value={surname}
+              onChange={e => setSurname(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-background border border-border text-text placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
 
-          />
-          {errors.surname && <div>{errors.surname}</div>}
-        </div>
-        <div>
-          <label htmlFor="login">login:</label>
-          <input
-            type="text"
-            id="login"
-            name="login"
-            value={login}
-            onChange={e => setLogin(e.target.value)}
-            className="border border-border rounded-md p-2"
-          />
-          {errors.login && <div>{errors.login}</div>}
-        </div>
-        <div>
-          <label htmlFor="password">Senha:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            className="border border-border rounded-md p-2"
-          />
-          {errors.password && <div>{errors.password}</div>}
-        </div>
-        <div>
-          {mensagem && (
-            <div className="mt-2 text-center text-sm text-red-600">
-              {mensagem}
-            </div>
-          )}
-        </div>
+            />
+            {errors.surname && <div>{errors.surname}</div>}
+          </div>
+          <div>
+            <label htmlFor="login" className="block mb-1 text-sm">login</label>
+            <input
+              type="text"
+              id="login"
+              placeholder="login"
+              name="login"
+              value={login}
+              onChange={e => setLogin(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-background border border-border text-text placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+            {errors.login && <div>{errors.login}</div>}
+          </div>
+          <div>
+            <label htmlFor="password" className="block mb-1 text-sm">Senha</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="**********"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg bg-background border border-border text-text placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+            {errors.password && <div>{errors.password}</div>}
+          </div>
+          <div>
+            {mensagem && (
+              <div className="mt-2 text-center text-sm text-red-600 space-x-2">
+                {mensagem}
+              </div>
+            )}
+          </div>
 
-        <button type="submit" className="bg-primary text-text px-4 py-2 rounded-md cursor-pointer">Criar</button>
-      </form>
+          <Button
+            type="submit"
+            className="w-full mt-2 bg-primary hover:bg-primary-dark text-white py-2 rounded-lg font-medium"
+          >
+            Criar
+          </Button>
+          <p className="mt-6 text-center text-sm text-muted">
+            Já possui conta?{' '}
+            <a href="/login" className="text-primary hover:underline">ir para login</a>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }
