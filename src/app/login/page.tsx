@@ -2,36 +2,48 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { api } from "@/http/api";
 
 export default function LoginPage() {
 
     const [form, setForm] = useState({
-        email: '',
+        login: '',
         password: ''
     });
     const [carregando, setCarregando] = useState(false);
     const [erro, setErro] = useState('');
     const router = useRouter();
+    const [mensagem, setMensagem] = useState("");
+
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setForm({ ...form, [e.target.name]: e.target.value });
-      }
+    }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        if (!form.email || !form.password) return;
+        if (!form.login || !form.password) return;
         setCarregando(true);
         setErro('');
         try {
-          // Simulação de autenticação
-          await new Promise(resolve => setTimeout(resolve, 1500));
-          router.push('/dashboard');
+
+            await api.post("auth/login", {
+                json: { login: form.login, password: form.password },
+            });
+
+            setMensagem("Login realizado com sucesso!");
+            setTimeout(() => {
+                setTimeout(() => {
+                    router.push("/dashboard");
+                }, 1000);
+            }, 1000);
         } catch (error) {
-          setErro('Credenciais inválidas. Por favor, tente novamente.');
+            setMensagem("Credenciais inválidas!");
+            setTimeout(() => (setMensagem("")), 1000);
         } finally {
-          setCarregando(false);
+            setCarregando(false);
         }
-      }
+    }
 
     return (
         <div className="min-h-screen bg-background text-text flex items-center justify-center px-4">
@@ -40,16 +52,16 @@ export default function LoginPage() {
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="email" className="block mb-1 text-sm">E-mail</label>
+                        <label htmlFor="login" className="block mb-1 text-sm">login</label>
                         <input
-                            id="email"
-                            type="email"
+                            id="login"
+                            type="login"
                             required
                             className="w-full px-4 py-2 rounded-lg bg-background border border-border text-text placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                            placeholder="seu@email.com"
+                            placeholder="login"
                             autoComplete="off"
-                            name="email"
-                            value={form.email}
+                            name="login"
+                            value={form.login}
                             onChange={handleChange}
                         />
                     </div>
@@ -75,6 +87,8 @@ export default function LoginPage() {
                         </label>
                         <a href="#" className="text-primary hover:underline">Esqueceu a senha?</a>
                     </div>
+
+                    {mensagem && <p className="text-red-500">{mensagem}</p>}
 
                     <Button
                         type="submit"

@@ -4,6 +4,8 @@ import { useState, useRef } from "react";
 import { api } from "@/http/api";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+
 
 interface User {
   name: string;
@@ -28,6 +30,7 @@ export default function CriarUsuarioPage() {
   const formRef = useRef<HTMLFormElement>(null);
   const [mensagem, setMensagem] = useState("");
 
+  const router = useRouter();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -48,14 +51,12 @@ export default function CriarUsuarioPage() {
         json: { name, surname, login, password },
       });
       setMensagem("Usuário criado com sucesso!");
-      setName("");
-      setSurname("");
-      setLogin("");
-      setPassword("");
-      setTimeout(() => setMensagem(""), 3000);
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
     } catch (error) {
       setMensagem("Falha na criação do usuário!");
-      setTimeout(() => setMensagem(""), 3000);
+      setTimeout(() => (setMensagem("")), 1000);
 
     }
   }
