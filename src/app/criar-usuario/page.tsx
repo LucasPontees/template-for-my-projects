@@ -5,6 +5,13 @@ import { api } from "@/http/api";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 
+interface User {
+  name: string;
+  surname: string;
+  login: string;
+  password: string;
+}
+
 const userSchema = z.object({
   name: z.string().min(3, "Nome obrigatório"),
   surname: z.string().min(3, "Sobrenome obrigatório"),
@@ -25,7 +32,8 @@ export default function CriarUsuarioPage() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrors({});
-    const result = userSchema.safeParse({ name, surname, password, login });
+    const userData: User = { name, surname, password, login };
+    const result = userSchema.safeParse(userData);
     if (!result.success) {
       const fieldErrors: { [key: string]: string } = {};
       result.error.errors.forEach((err) => {

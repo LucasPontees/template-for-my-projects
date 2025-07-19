@@ -1,4 +1,3 @@
-// lib/api.ts
 import ky from 'ky'
 
 export const api = ky.create({
@@ -6,5 +5,5 @@ export const api = ky.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  credentials: 'include', // para cookies HttpOnly
+  credentials: 'include', 
 })
