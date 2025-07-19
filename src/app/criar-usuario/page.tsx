@@ -5,6 +5,7 @@ import { api } from "@/http/api";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Link from 'next/link';
 
 
 interface User {
@@ -135,7 +136,7 @@ export default function CriarUsuarioPage() {
           </Button>
           <p className="mt-6 text-center text-sm text-muted">
             Já possui conta?{' '}
-            <a href="/login" className="text-primary hover:underline">ir para login</a>
+            <Link href="/login" className="text-primary hover:underline">ir para login</Link>
           </p>
         </form>
       </div>

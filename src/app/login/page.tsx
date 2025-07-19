@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/http/api";
+import Link from 'next/link';
 
 export default function LoginPage() {
 
@@ -100,7 +101,7 @@ export default function LoginPage() {
 
                 <p className="mt-6 text-center text-sm text-muted">
                     Não tem uma conta?{' '}
-                    <a href="/criar-usuario" className="text-primary hover:underline">Cadastre-se</a>
+                    <Link href="/criar-usuario" className="text-primary hover:underline">Cadastre-se</Link>
                 </p>
             </div>
         </div>
