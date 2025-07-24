@@ -49,9 +49,7 @@ export default function NextSidebar() {
 
   const sidebarItems = [
     { icon: Home, label: 'Dashboard', href: '/dashboard', isActive: pathname === '/dashboard' },
-    { icon: Trash2, label: 'Coletas', href: '/coletas', isActive: pathname === '/coletas' },
     { icon: Users, label: 'Clientes', href: '/clientes', isActive: pathname === '/clientes' },
-    { icon: TruckIcon, label: 'Veículos', href: '/veiculos', isActive: pathname === '/veiculos' },
     { icon: Calendar, label: 'Agendamentos', href: '/agendamentos', isActive: pathname === '/agendamentos' },
     { icon: BarChart3, label: 'Relatórios', href: '/relatorios', isActive: pathname === '/relatorios' },
     { icon: Settings, label: 'Configurações', href: '/configuracoes', isActive: pathname === '/configuracoes' },
