@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { apiForm } from "@/http/api"; // ajuste o caminho se necessário
+import { api } from "@/http/api";
 
 type User = {
   id: string;
@@ -18,7 +18,7 @@ export default function EditarUsuarioPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const data = await apiForm.get("users").json<User[]>();
+        const data = await api.get("users").json<User[]>();
         setUsers(data);
       } catch (err) {
         setError("Erro ao buscar usuários.");

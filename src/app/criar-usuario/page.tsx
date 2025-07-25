@@ -48,7 +48,7 @@ export default function CriarUsuarioPage() {
     }
 
     try {
-      await api.post("auth/register", {
+      await api.post("users/create", {
         json: { name, surname, login, password },
       });
       setMensagem("Usuário criado com sucesso!");
