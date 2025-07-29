@@ -86,7 +86,7 @@ export default function LoginPage() {
                             <input type="checkbox" className="accent-primary" />
                             <span>Lembrar senha</span>
                         </label>
-                        <a href="#" className="text-primary hover:underline">Esqueceu a senha?</a>
+                        <Link href="/redefinir-senha" className="text-primary hover:underline">Esqueceu a senha?</Link>
                     </div>
 
                     {mensagem && <p className="text-red-500">{mensagem}</p>}

@@ -15,7 +15,7 @@ export const config = {
   ],
 };
 
-const unprotectedRoutes = ["/login", "/editar-usuario", "/criar-usuario"];
+const unprotectedRoutes = ["/login", "/redefinir-senha", "/criar-usuario"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
